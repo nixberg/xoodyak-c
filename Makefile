@@ -15,11 +15,8 @@ obj/xoodoo.o: src/xoodoo.c src/xoodyak.h
 	$(CC) $(CFLAGS) src/xoodoo.c -c -o obj/xoodoo.o
 
 test:
-	@$(CC) $(TEST_CFLAGS) src/xoodoo.c -c -o obj/test_xoodoo.o
-	@$(CC) $(TEST_CFLAGS) src/xoodyak.c -c -o obj/test_xoodyak.o
-	@$(CC) $(TEST_CFLAGS) tests/main.c -c -o obj/test.o -I lib
-	@$(CC) $(TEST_CFLAGS) obj/test.o obj/test_xoodyak.o obj/test_xoodoo.o -o obj/test
-	@./obj/test
+	@$(CC) $(TEST_CFLAGS) tests/main.c src/xoodoo.c src/xoodyak.c -o obj/test
+	@obj/test
 
 clean:
 	rm -r obj
