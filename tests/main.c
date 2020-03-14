@@ -17,13 +17,16 @@ static void test_xoodoo(void) {
         xoodoo_permute(&xoodoo);
     }
     
-    uint32_t expected[12] = {
-        0xfe04fab0, 0x42d5d8ce, 0x29c62ee7, 0x2a7ae5cf,
-        0xea36eba3, 0x14649e0a, 0xfe12521b, 0xfe2eff69,
-        0xf1826ca5, 0xfc4c41e0, 0x1597394f, 0xeb092faf,
+    uint8_t expected[48] = {
+        0xb0, 0xfa, 0x04, 0xfe, 0xce, 0xd8, 0xd5, 0x42,
+        0xe7, 0x2e, 0xc6, 0x29, 0xcf, 0xe5, 0x7a, 0x2a,
+        0xa3, 0xeb, 0x36, 0xea, 0x0a, 0x9e, 0x64, 0x14,
+        0x1b, 0x52, 0x12, 0xfe, 0x69, 0xff, 0x2e, 0xfe,
+        0xa5, 0x6c, 0x82, 0xf1, 0xe0, 0x41, 0x4c, 0xfc,
+        0x4f, 0x39, 0x97, 0x15, 0xaf, 0x2f, 0x09, 0xeb,
     };
     
-    for (size_t i = 0; i < 12; i++) {
+    for (size_t i = 0; i < 48; i++) {
         assert(xoodoo.state[i] == expected[i]);
     }
     
@@ -95,7 +98,7 @@ static void test_xoodyak_hash(void) {
 
 static void test_xoodyak_aead(void) {
     Xoodyak xoodyak;
-
+    
     uint8_t key[KEY_LEN];
     uint8_t nonce[NONCE_LEN];
     uint8_t pt[PT_MAX_LEN];
@@ -104,7 +107,7 @@ static void test_xoodyak_aead(void) {
     uint8_t ct[CT_MAX_LEN];
     uint8_t new_ct[CT_MAX_LEN];
     uint8_t new_tag[TAG_LEN];
-
+    
     fill(key, KEY_LEN);
     fill(nonce, NONCE_LEN);
     

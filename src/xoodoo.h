@@ -4,7 +4,7 @@
 #include <stdint.h>
 
 typedef struct {
-    uint32_t state[12];
+    uint8_t state[48];
 } Xoodoo;
 
 void xoodoo_init(Xoodoo *xoodoo);
