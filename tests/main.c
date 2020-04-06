@@ -142,7 +142,7 @@ static void test_xoodyak_aead(void) {
     }
 }
 
-int main() {
+int main(void) {
     test_xoodoo();
     test_xoodyak_hash();
     test_xoodyak_aead();

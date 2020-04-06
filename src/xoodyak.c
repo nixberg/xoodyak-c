@@ -63,6 +63,30 @@ static void xoodyak_absorb_any(Xoodyak *xoodyak, const uint8_t *input, size_t in
     } while (input_len > 0);
 }
 
+static void xoodyak_absorb_key(Xoodyak *xoodyak, const void *key, size_t key_len, const void *id, size_t id_len, const void *counter, size_t counter_len) {
+    ensure(key_len + id_len <= RATES_INPUT - 1, "xoodyak_keyed: Key + ID too long!");
+
+    xoodyak->mode = Keyed;
+    xoodyak->rates.absorb = RATES_INPUT;
+    xoodyak->rates.squeeze = RATES_OUTPUT;
+    
+    size_t buffer_len = 0;
+    uint8_t buffer[RATES_INPUT];
+    memcpy(buffer, key, key_len);
+    buffer_len += key_len;
+    memcpy(buffer + buffer_len, id, id_len);
+    buffer_len += id_len;
+    buffer[buffer_len] = (uint8_t)id_len;
+    buffer_len += 1;
+
+    xoodyak_absorb_any(xoodyak, buffer, buffer_len, xoodyak->rates.absorb, AbsorbKey);
+    
+    if (counter_len > 0) {
+        xoodyak_absorb_any(xoodyak, counter, counter_len, 1, Zero);
+    }
+}
+
+
 static void xoodyak_crypt(Xoodyak *xoodyak, const uint8_t *input, uint8_t *output, size_t len, bool decrypt) {
     XoodyakFlag flag = Crypt;
     
@@ -117,23 +141,8 @@ void xoodyak_init(Xoodyak *xoodyak) {
 }
 
 void xoodyak_keyed(Xoodyak *xoodyak, const void *key, size_t key_len, const void *id, size_t id_len, const void *counter, size_t counter_len) {
-    xoodyak->mode = Keyed;
-    xoodyak->rates.absorb = RATES_INPUT;
-    xoodyak->rates.squeeze = RATES_OUTPUT;
-    xoodyak->phase = Up;
-    xoodoo_init(&xoodyak->xoodoo);
-    
-    size_t buffer_len = key_len + id_len + 1;
-    ensure(buffer_len <= RATES_INPUT, "xoodyak_keyed: Key + ID too long!");
-    uint8_t buffer[RATES_INPUT];
-    memcpy(buffer, key, key_len);
-    memcpy(buffer + key_len, id, id_len);
-    buffer[buffer_len - 1] = id_len;
-    xoodyak_absorb_any(xoodyak, buffer, buffer_len, xoodyak->rates.absorb, AbsorbKey);
-    
-    if (counter_len > 0) {
-        xoodyak_absorb_any(xoodyak, counter, counter_len, 1, Zero);
-    }
+    xoodyak_init(xoodyak);
+    xoodyak_absorb_key(xoodyak, key, key_len, id, id_len, counter, counter_len);
 }
 
 void xoodyak_absorb(Xoodyak *xoodyak, const void *input, size_t input_len) {

@@ -71,7 +71,7 @@ static void pack(const uint32_t source[12], uint8_t destination[48]) {
         destination[j++] = (uint8_t)(source[i] >>  8);
         destination[j++] = (uint8_t)(source[i] >> 16);
         destination[j++] = (uint8_t)(source[i] >> 24);
-	}
+    }
 }
 
 void xoodoo_permute(Xoodoo *xoodoo) {
