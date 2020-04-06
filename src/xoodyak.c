@@ -31,7 +31,6 @@ static void down(Xoodyak *xoodyak, const uint8_t *block, size_t block_len, Xoody
     }
 }
 
-// TODO: simplify in other impls?
 static void up(Xoodyak *xoodyak, uint8_t *block, size_t block_len, XoodyakFlag flag) {
     xoodyak->phase = Up;
     if (xoodyak->mode != Hash) {
@@ -65,7 +64,7 @@ static void xoodyak_absorb_any(Xoodyak *xoodyak, const uint8_t *input, size_t in
 
 static void xoodyak_absorb_key(Xoodyak *xoodyak, const void *key, size_t key_len, const void *id, size_t id_len, const void *counter, size_t counter_len) {
     ensure(key_len + id_len <= RATES_INPUT - 1, "xoodyak_keyed: Key + ID too long!");
-
+    
     xoodyak->mode = Keyed;
     xoodyak->rates.absorb = RATES_INPUT;
     xoodyak->rates.squeeze = RATES_OUTPUT;
@@ -78,7 +77,7 @@ static void xoodyak_absorb_key(Xoodyak *xoodyak, const void *key, size_t key_len
     buffer_len += id_len;
     buffer[buffer_len] = (uint8_t)id_len;
     buffer_len += 1;
-
+    
     xoodyak_absorb_any(xoodyak, buffer, buffer_len, xoodyak->rates.absorb, AbsorbKey);
     
     if (counter_len > 0) {
@@ -141,6 +140,7 @@ void xoodyak_init(Xoodyak *xoodyak) {
 }
 
 void xoodyak_keyed(Xoodyak *xoodyak, const void *key, size_t key_len, const void *id, size_t id_len, const void *counter, size_t counter_len) {
+    ensure(key_len != 0, "xoodyak_keyed: Key must not be empty!");
     xoodyak_init(xoodyak);
     xoodyak_absorb_key(xoodyak, key, key_len, id, id_len, counter, counter_len);
 }
@@ -170,7 +170,7 @@ void xoodyak_squeeze_key(Xoodyak *xoodyak, void *output, size_t output_len) {
 
 void xoodyak_ratchet(Xoodyak *xoodyak) {
     ensure(xoodyak->mode == Keyed, "xoodyak_ratchet: Not in keyed mode!");
-    uint8_t buffer[RATES_RATCHET]; // TODO: Analyzer complains?
+    uint8_t buffer[RATES_RATCHET];
     xoodyak_squeeze_any(xoodyak, buffer, RATES_RATCHET, Ratchet);
     xoodyak_absorb_any(xoodyak, buffer, RATES_RATCHET, xoodyak->rates.absorb, Zero);
 }
