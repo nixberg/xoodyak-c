@@ -1,24 +1,45 @@
 CFLAGS= -fPIC -Os -Wall -Werror -Wextra -std=c99
 TEST_CFLAGS= -g3 -fPIC -Wall -Werror -Wextra -std=c99 -fsanitize=address,undefined
 
+objects = .build/xoodoo.o .build/xoodyak.o .build/xoodyak-internal.o
+
+
 .PHONY: all test clean
 
-all: xoodyak.so
 
-xoodyak.so: obj/xoodyak.o obj/xoodoo.o
-	$(CC) $(CFLAGS) -shared obj/xoodyak.o obj/xoodoo.o -o xoodyak.so
+all: xoodyak.so keyed-xoodyak.so
 
-obj/xoodyak.o: src/xoodyak.c src/xoodyak.h src/xoodoo.h
-	$(CC) $(CFLAGS) src/xoodyak.c -c -o obj/xoodyak.o
+xoodyak.so: $(objects)
+	cc $(CFLAGS) -shared -o xoodyak.so $(objects)
 
-obj/xoodoo.o: src/xoodoo.c src/xoodyak.h
-	$(CC) $(CFLAGS) src/xoodoo.c -c -o obj/xoodoo.o
+keyed-xoodyak.so: $(objects) .build/keyed-xoodyak.o
+	cc $(CFLAGS) -shared -o keyed-xoodyak.so $(objects) .build/keyed-xoodyak.o
 
-test:
-	@$(CC) $(TEST_CFLAGS) tests/main.c src/xoodoo.c src/xoodyak.c -o obj/test
-	@obj/test
+
+.build/xoodoo.o: src/xoodoo.*
+	cc $(CFLAGS) -DNDEBUG -c -o .build/xoodoo.o src/xoodoo.c
+
+.build/xoodyak.o: src/*
+	cc $(CFLAGS) -c -o .build/xoodyak.o src/xoodyak.c
+
+.build/keyed-xoodyak.o: src/*
+	cc $(CFLAGS) -c -o .build/keyed-xoodyak.o src/keyed_xoodyak.c
+
+.build/xoodyak-internal.o: src/*
+	cc $(CFLAGS) -c -o .build/xoodyak-internal.o src/xoodyak_internal.c
+
+
+test: keyed-xoodyak.so .build/xoodoo.o
+	cc $(TEST_CFLAGS) -o .build/test test/main.c src/*.c
+	.build/test
+	cc $(TEST_CFLAGS) -o .build/test test/main.c keyed-xoodyak.so
+	.build/test
+
 
 clean:
-	rm -r obj
+	rm -rf .build
+	rm -f xoodyak.so
+	rm -f keyed-xoodyak.so
 
-_ := $(shell mkdir -p obj)
+
+_ := $(shell mkdir -p .build)

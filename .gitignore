@@ -1,2 +1,2 @@
-obj/
-*.xcodeproj/
+/.build
+/*.xcodeproj
