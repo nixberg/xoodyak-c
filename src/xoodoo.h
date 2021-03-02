@@ -1,10 +1,11 @@
 #ifndef xoodoo_h
 #define xoodoo_h
 
+#include <stddef.h>
 #include <stdint.h>
 
 typedef struct {
-    uint8_t state[48];
+    uint8_t bytes[48];
 } Xoodoo;
 
 void xoodoo_init(Xoodoo *xoodoo);
