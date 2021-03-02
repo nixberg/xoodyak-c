@@ -5,10 +5,10 @@
 #include "keyed_xoodyak.h"
 #include "xoodyak_internal.h"
 
-const static size_t RATE_KEYED_INPUT  = 44;
-const static size_t RATE_KEYED_OUTPUT = 24;
-const static size_t RATE_RATCHET      = 16;
-const static size_t RATE_COUNTER      = 1;
+static const size_t RATE_KEYED_INPUT  = 44;
+static const size_t RATE_KEYED_OUTPUT = 24;
+static const size_t RATE_RATCHET      = 16;
+static const size_t RATE_COUNTER      = 1;
 
 static void crypt(Xoodyak *xoodyak,
                   const uint8_t *input,

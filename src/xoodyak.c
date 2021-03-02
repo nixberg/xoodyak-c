@@ -2,7 +2,7 @@
 #include "xoodyak.h"
 #include "xoodyak_internal.h"
 
-const static size_t RATE_HASH = 16;
+static const size_t RATE_HASH = 16;
 
 void xoodyak_init(Xoodyak *xoodyak) {
     xoodoo_init(&xoodyak->xoodoo);
