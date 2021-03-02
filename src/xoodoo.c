@@ -13,12 +13,12 @@ void xoodoo_init(Xoodoo *xoodoo) {
 }
 
 uint8_t xoodoo_get(const Xoodoo *xoodoo, size_t index) {
-    assert(0 <= index && index < 48);
+    assert(index < 48);
     return xoodoo->bytes[index];
 }
 
 void xoodoo_xor(Xoodoo *xoodoo, size_t index, uint8_t byte) {
-    assert(0 <= index && index < 48);
+    assert(index < 48);
     xoodoo->bytes[index] ^= byte;
 }
 

@@ -40,7 +40,9 @@ void keyed_xoodyak_init(KeyedXoodyak *keyed_xoodyak,
     uint8_t buffer[RATE_KEYED_INPUT];
     memcpy(buffer, key, key_len);
     buffer_len += key_len;
-    memcpy(buffer + buffer_len, id, id_len);
+    if (id != NULL) {
+        memcpy(buffer + buffer_len, id, id_len);
+    }
     buffer_len += id_len;
     buffer[buffer_len] = (uint8_t)id_len;
     buffer_len += 1;

@@ -32,8 +32,8 @@ keyed-xoodyak.so: $(objects) .build/keyed-xoodyak.o
 test: keyed-xoodyak.so .build/xoodoo.o
 	cc $(TEST_CFLAGS) -o .build/test test/main.c src/*.c
 	.build/test
-	cc $(TEST_CFLAGS) -o .build/test test/main.c keyed-xoodyak.so
-	.build/test
+	#cc $(TEST_CFLAGS) -o .build/test test/main.c keyed-xoodyak.so
+	#.build/test
 
 
 clean:
