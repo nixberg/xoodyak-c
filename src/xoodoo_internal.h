@@ -1,12 +1,7 @@
-#ifndef xoodoo_h
-#define xoodoo_h
+#ifndef xoodoo_internal_h
+#define xoodoo_internal_h
 
-#include <stddef.h>
-#include <stdint.h>
-
-typedef struct {
-    uint8_t bytes[48];
-} Xoodoo;
+#include "xoodyak.h"
 
 void xoodoo_init(Xoodoo *xoodoo);
 
@@ -16,4 +11,4 @@ void xoodoo_xor(Xoodoo *xoodoo, size_t index, uint8_t byte);
 
 void xoodoo_permute(Xoodoo *xoodoo);
 
-#endif /* xoodoo_h */
+#endif /* xoodoo_internal_h */

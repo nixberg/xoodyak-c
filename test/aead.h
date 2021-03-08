@@ -1,5 +1,5 @@
-#ifndef aeadkats_h
-#define aeadkats_h
+#ifndef aead_h
+#define aead_h
 
 #define KEY_LEN    16
 #define NONCE_LEN  16
@@ -8,9 +8,9 @@
 #define CT_MAX_LEN 48
 #define TAG_LEN    16
 
-#define AEAD_KATS_LEN 1089
+#define AEAD_KATS_LEN (sizeof(aead_kats) / sizeof(aead_kats[0]))
 
-static char aead_kats[AEAD_KATS_LEN][2 * CT_MAX_LEN + 1] = {
+static char aead_kats[][2 * CT_MAX_LEN + 1] = {
     "4BF0E393144CB58069FC1FEBCAFCFB3C",
     "4D2A8D1716DFE3401F3BBE8ACB637AB0",
     "4EBC154612159A949679453DC6CC52C6",
@@ -1102,4 +1102,4 @@ static char aead_kats[AEAD_KATS_LEN][2 * CT_MAX_LEN + 1] = {
     "DC56EC14215C53A5F2A2A5B957865F46F6201A071795A20FFA0116AD49DE4DE4007C270D39722FF5F3271700B1935B97",
 };
 
-#endif /* aeadkats_h */
+#endif /* aead_h */

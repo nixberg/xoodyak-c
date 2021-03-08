@@ -1,3 +1,4 @@
+#include "xoodoo_internal.h"
 #include "xoodyak_internal.h"
 
 void down(Xoodyak *xoodyak, const uint8_t *block, size_t block_len, XoodyakFlag flag) {

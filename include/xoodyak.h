@@ -1,7 +1,12 @@
 #ifndef xoodyak_h
 #define xoodyak_h
 
-#include "xoodoo.h"
+#include <stddef.h>
+#include <stdint.h>
+
+typedef struct {
+    uint8_t bytes[48];
+} Xoodoo;
 
 typedef enum {
     Up,

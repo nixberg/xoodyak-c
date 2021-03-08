@@ -1,5 +1,6 @@
-#include "xoodoo.h"
 #include "xoodyak.h"
+
+#include "xoodoo_internal.h"
 #include "xoodyak_internal.h"
 
 static const size_t RATE_HASH = 16;

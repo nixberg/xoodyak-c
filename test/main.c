@@ -3,12 +3,12 @@
 #include <string.h>
 #include <strings.h>
 
-#include "../src/xoodoo.h"
-#include "../src/xoodyak.h"
-#include "../src/keyed_xoodyak.h"
+#include "../src/xoodoo_internal.h"
+#include "xoodyak.h"
+#include "keyed_xoodyak.h"
 
-#include "hashkats.h"
-#include "aeadkats.h"
+#include "hash.h"
+#include "aead.h"
 
 static void test_xoodoo(void);
 static void test_xoodyak_hash(void);
@@ -42,9 +42,7 @@ static void test_xoodoo(void) {
         0x4f, 0x39, 0x97, 0x15, 0xaf, 0x2f, 0x09, 0xeb,
     };
     
-    for (size_t i = 0; i < 48; i++) {
-        assert(xoodoo.bytes[i] == expected[i]);
-    }
+    compare_bytes(xoodoo.bytes, expected, 48);
     
     xoodoo_init(&xoodoo);
     
@@ -69,7 +67,7 @@ static void test_xoodyak_hash(void) {
         xoodyak_absorb(&xoodyak, msg, i);
         xoodyak_squeeze(&xoodyak, new_md, MD_LEN);
         
-        assert(compare_bytes(md, new_md, MD_LEN));
+        assert(compare_bytes(new_md, md, MD_LEN));
     }
 }
 
@@ -106,13 +104,13 @@ static void test_xoodyak_aead(void) {
             keyed_xoodyak_encrypt(&encryptor, pt, new_ct, pt_len);
             keyed_xoodyak_squeeze(&encryptor, new_ct + pt_len, TAG_LEN);
             
-            assert(compare_bytes(ct, new_ct, ct_len));
+            assert(compare_bytes(new_ct, ct, ct_len));
             
             keyed_xoodyak_decrypt(&decryptor, ct, new_pt, pt_len);
             keyed_xoodyak_squeeze(&decryptor, new_tag, TAG_LEN);
             
-            assert(compare_bytes(pt, new_pt, pt_len));
-            assert(compare_bytes(ct + pt_len, new_tag, TAG_LEN));
+            assert(compare_bytes(new_pt, pt, pt_len));
+            assert(compare_bytes(new_tag, ct + pt_len, TAG_LEN));
         }
     }
 }

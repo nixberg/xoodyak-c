@@ -1,7 +1,7 @@
 #include <assert.h>
 #include <string.h>
 
-#include "xoodoo.h"
+#include "xoodoo_internal.h"
 
 static inline void unpack(const uint8_t source[48], uint32_t destination[12]);
 static inline void pack(const uint32_t source[12], uint8_t destination[48]);

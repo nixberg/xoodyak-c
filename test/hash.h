@@ -1,11 +1,10 @@
-#ifndef hashkats_h
-#define hashkats_h
+#ifndef hash_h
+#define hash_h
 
 #define MD_LEN 32
+#define HASH_KATS_LEN (sizeof(hash_kats) / sizeof(hash_kats[0]))
 
-#define HASH_KATS_LEN 1025
-
-static char hash_kats[HASH_KATS_LEN][2 * MD_LEN + 1] = {
+static char hash_kats[][2 * MD_LEN + 1] = {
     "EA152F2B47BCE24EFB66C479D4ADF17BD324D806E85FF75EE369EE50DC8F8BD1",
     "27921F8DDF392894460B70B3ED6C091E6421B7D2147DCD6031D7EFEBAD3030CC",
     "DD3F12E89DB41C61D3C05779705FA946A8C69C79EEFDC1B4A966A5F1AB35073D",
@@ -1033,4 +1032,4 @@ static char hash_kats[HASH_KATS_LEN][2 * MD_LEN + 1] = {
     "FCC4D63932D98C30CAB597E60B7CCA475BD9FBF984838C5CB5615C949F814615",
 };
 
-#endif /* hashkats_h */
+#endif /* hash_h */
